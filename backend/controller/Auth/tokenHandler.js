@@ -7,15 +7,25 @@ const generateToken = (id)=>{
 const tokenValidation = (token) =>{
    try{
      const decoded = jwt.verify(token,process.env.JWT_SECRET)
-     if(decoded){
-        return true;
+     if(decoded) {
+        return {
+         status:true,
+         payload:decoded,
+         error:undefined,
+        }
      }
-     else{
-        false
-     }
+    return {
+         status:false,
+         payload:decoded,
+         error:"Faild to validate token",
+        }
    }
    catch(err){
-    return false;
+    return {
+      status:false,
+      payload:decoded,
+      error:error.message
+    };
    }
 }
 
