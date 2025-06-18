@@ -46,6 +46,7 @@ const registerUser = async(req,res)=>{
         
         return res.status(201).json({
             status:200,
+            message:"User created successfully",
             id:createUser._id,
             user:createUser,
             token:generateToken(createUser._id)

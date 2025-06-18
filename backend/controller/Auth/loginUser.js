@@ -1,4 +1,5 @@
-const User = require('../../model/user')
+const User = require('../../model/user');
+const { generateToken } = require('./tokenHandler');
 
 // steps :-
 /* (Testing Pending)
@@ -37,7 +38,7 @@ const loginUser = async(req,res)=>{
                 status:400,
             })
         }
-        if(!(await User.comparePassword(password)))
+        if(!(await isUserAlreadyExists.comparePassword(password)))
         {
             return res.status(400).json({
                 message:"Password is incorrect",
@@ -46,6 +47,7 @@ const loginUser = async(req,res)=>{
         }
         return res.status(201).json({
             status:200,
+            message:'user logged in successfully',
             id:isUserAlreadyExists._id,
             user:isUserAlreadyExists,
             token:generateToken(isUserAlreadyExists._id)
