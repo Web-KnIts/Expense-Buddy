@@ -45,7 +45,7 @@ const loginUser = async(req,res)=>{
                 status:400,
             })
         }
-        return res.status(201).json({
+        return res.status(200).json({
             status:200,
             message:'user logged in successfully',
             id:isUserAlreadyExists._id,

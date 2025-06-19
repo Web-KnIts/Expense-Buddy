@@ -7,6 +7,7 @@ const { connectDatabase } = require('./config/db');
 const authRouter = require('./routes/authRoutes');
 const incomeRouter = require('./routes/incomeRoutes');
 const expenseRouter = require('./routes/expenseRoutes');
+const dashboardRouter = require('./routes/dashboardRoutes');
 
 const app = express();
 
@@ -22,8 +23,8 @@ app.use(express.json());
 app.use('/api/v1/auth/',authRouter)
 app.use('/api/v1/income/',incomeRouter)
 app.use('/api/v1/expense/',expenseRouter)
-
-
+app.use('/api/v1/dashboard/',dashboardRouter)
+app.use('/uploads',express.static(path.join(__dirname,'uploads')));
 
 const PORT = process.env.PORT || 5000;
 connectDatabase().then(()=>{
