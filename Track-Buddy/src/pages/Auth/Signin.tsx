@@ -4,6 +4,8 @@ import Input from '../../components/Input/Input';
 import { Link } from 'react-router-dom';
 import z from 'zod'
 import type { iloginCredential } from '../types';
+import axiosInstance from '../../services/axiosInstance';
+import { API_PATH } from '../../services/apiPath';
 
 const zodSchemaValidationForSignIn = z.object({
   email:z.string().email('Invalid Email'),
@@ -44,6 +46,20 @@ const Signin = () => {
         ...prev,
         error:""
       }));
+    
+      try{
+        const response = await axiosInstance.post(API_PATH.AUTH.LOGIN,{
+          email:loginCredential.email,
+          password:loginCredential.password
+        });
+        console.log(response);
+      }
+      catch(err)
+      {
+        console.log(API_PATH.AUTH.LOGIN)
+        console.log('Error : ',err)
+      }
+
   }
 
 

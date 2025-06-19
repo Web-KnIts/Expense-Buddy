@@ -53,7 +53,6 @@ const SignUp = () => {
       // console.log('error ',validationResult.error.errors)
       return ;
     }
-    // remove errors :
     setSignupCredentials((prev)=>({
       ...prev,
       error:''
