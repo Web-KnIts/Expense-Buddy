@@ -39,12 +39,14 @@ const loginUser = async(req,res)=>{
             })
         }
         if(!(await isUserAlreadyExists.comparePassword(password)))
-        {
-            return res.status(400).json({
-                message:"Password is incorrect",
-                status:400,
-            })
-        }
+            {
+                return res.status(400).json({
+                    message:"Password is incorrect",
+                    status:400,
+                })
+            }
+        isUserAlreadyExists.password = "";
+        console.log('User Logged in');
         return res.status(200).json({
             status:200,
             message:'user logged in successfully',
@@ -55,6 +57,7 @@ const loginUser = async(req,res)=>{
     }
     catch(err)
     {
+        console.log(err);
         return res.status(500).json({
             status:500,
             message:"Error while Logging User in",

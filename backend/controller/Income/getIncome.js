@@ -5,7 +5,7 @@ const getIncome = async(req,res)=>{
     try{
         const userId = req.user.id;
         const incomeOfUser = await Income.find({userId}).sort({date:-1});
-        console.log('Income of User : ',incomeOfUser);
+        console.log('Fetched All user income');
         return res.status(200).json({
             status:200,
             userId,

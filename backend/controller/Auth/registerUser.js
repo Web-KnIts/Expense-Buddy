@@ -26,7 +26,8 @@ const validateData = (validationData)=>{
 const registerUser = async(req,res)=>{
     try{
         const {fullname,email,password,profileImageUrl} = req.body;
-        if(!validateData([fullname,email,password]))
+        console.log(req.body);
+        if(!validateData([fullname,email,password,profileImageUrl]))
         {
             return res.status(400).json({
                 message:"All fields are Required",
@@ -43,7 +44,7 @@ const registerUser = async(req,res)=>{
         const createUser = await User.create({
             fullname,email,password,profileImageUrl
         })
-        
+        console.log('User created Successfully ');
         return res.status(201).json({
             status:200,
             message:"User created successfully",

@@ -24,7 +24,7 @@ app.use('/api/v1/auth/',authRouter)
 app.use('/api/v1/income/',incomeRouter)
 app.use('/api/v1/expense/',expenseRouter)
 app.use('/api/v1/dashboard/',dashboardRouter)
-app.use('/uploads',express.static(path.join(__dirname,'uploads')));
+app.use('/uploads',express.static(path.join(__dirname,'upload')));
 
 const PORT = process.env.PORT || 5000;
 connectDatabase().then(()=>{
