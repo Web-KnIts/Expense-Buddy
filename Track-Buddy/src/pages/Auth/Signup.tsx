@@ -1,17 +1,26 @@
 import React, { useState } from "react";
 import AuthLayout from "../../components/Layout/AuthLayout";
 import Input from "../../components/Input/Input";
-import { Link } from "react-router-dom";
-import type { isignupCredential } from "../types";
-import z from 'zod'
+import { Link, useNavigate } from "react-router-dom";
+import type { isignupCredential, iUserResponse } from "../types";
+import z from "zod";
 import ProfileAvatar from "../../components/Input/ProfileAvatar";
+import { API_PATH } from "../../services/apiPath";
+import axiosInstance from "../../services/axiosInstance";
+import { useUserContext } from "../../context/userContext";
+import uploadImage from "../../services/uploadImage";
 
-
-const zodSchemaValidationForSignUp = z.object({
-  fullname:z.string().min(1,'Full name is required'),
-  email:z.string().email('Invalid email address'),
-  confirmPassword:z.string().min(8,'Cofirm Password must be at least 8 char'),
-  password:z.string().min(8,'Password must be at least 8 char').refine((val) => /[A-Z]/.test(val), {
+const zodSchemaValidationForSignUp = z
+  .object({
+    fullname: z.string().min(1, "Full name is required"),
+    email: z.string().email("Invalid email address"),
+    confirmPassword: z
+      .string()
+      .min(8, "Cofirm Password must be at least 8 char"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 char")
+      .refine((val) => /[A-Z]/.test(val), {
         message: "Password must contain at least one uppercase letter",
       })
       .refine((val) => /[a-z]/.test(val), {
@@ -23,41 +32,81 @@ const zodSchemaValidationForSignUp = z.object({
       .refine((val) => /[^A-Za-z0-9]/.test(val), {
         message: "Password must contain at least one special character",
       }),
-}).refine((data)=> data.password === data.confirmPassword, {
-  message:"Passwords do not match",
-  path:['confirmPassword']
-})
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 const SignUp = () => {
-  const [signupCredentials, setSignupCredentials] = useState<isignupCredential>({
-    fullname: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    error: "",
-  });
-  const [profileImage,setProfileImage] = useState<File | null>(null);
-
+  const [signupCredentials, setSignupCredentials] = useState<isignupCredential>(
+    {
+      fullname: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      error: "",
+    }
+  );
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const { updateUser } = useUserContext();
+  const navigate = useNavigate();
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let profileUrl = "";
-
-    // console.log("form values : ",signupCredentials)
-    const validationResult = zodSchemaValidationForSignUp.safeParse(signupCredentials);
-    if(!validationResult.success)
-    {
-      setSignupCredentials((prev)=>({
+    const validationResult =
+      zodSchemaValidationForSignUp.safeParse(signupCredentials);
+    if (!validationResult.success) {
+      setSignupCredentials((prev) => ({
         ...prev,
-        error:validationResult.error.errors[0]?.message || "Validation Error"
+        error: validationResult.error.errors[0]?.message || "Validation Error",
       }));
-      // console.log('error ',validationResult.error.errors)
-      return ;
+      return;
     }
-    setSignupCredentials((prev)=>({
+    setSignupCredentials((prev) => ({
       ...prev,
-      error:''
-    }))
-    // console.log('chala : ',signupCredentials);
+      error: "",
+    }));
+    try {
+      console.log(signupCredentials)
+      if (profileImage) {
+        const imageUploadResponse = await uploadImage(profileImage);
+        const { imageUrl } = imageUploadResponse as { imageUrl: string };
+        console.log("image",imageUrl);
+        profileUrl = imageUrl;
+      }
+      const response = await axiosInstance.post(API_PATH.AUTH.REGISTER, {
+        ...signupCredentials,
+        profileImageUrl: profileUrl,
+      });
+      const { user, token } = response.data as iUserResponse;
+      if (token) {
+        localStorage.setItem("token", token);
+        updateUser(user);
+        navigate("/dashboard");
+      }
+    } catch (err: any) {
+      console.log(signupCredentials)
+      console.log(
+        API_PATH.AUTH.REGISTER,
+        " --------------------------------------------------"
+      );
+      console.log("Error : ", err);
+      console.log(
+        "-------------------------------------------------------------------------"
+      );
+      if (err.response && err.response?.data?.message) {
+        setSignupCredentials((prev) => ({
+          ...prev,
+          error: err.response?.data?.message || "Validation Error",
+        }));
+      } else {
+        setSignupCredentials((prev) => ({
+          ...prev,
+          error: err.response?.data?.message || "Only .jpeg, .jpg and .png formats are allowed",
+        }));
+      }
+    }
   };
 
   return (
@@ -123,10 +172,19 @@ const SignUp = () => {
               />
             </div>
           </div>
-            {signupCredentials.error && <p className='text-red-950 text-xs pb-2.5'>{signupCredentials.error}</p>}
-          <button type='submit' className='btn-primary'>SIGNUP</button>
-          <p className='text-[13px] text-slate-800 mt-3'>Have an account ?{" "}
-            <Link className='font-medium text-red-600 underline' to='/Login'>Login</Link>
+          {signupCredentials.error && (
+            <p className="text-red-950 text-xs pb-2.5">
+              {signupCredentials.error}
+            </p>
+          )}
+          <button type="submit" className="btn-primary">
+            SIGNUP
+          </button>
+          <p className="text-[13px] text-slate-800 mt-3">
+            Have an account ?{" "}
+            <Link className="font-medium text-red-600 underline" to="/Login">
+              Login
+            </Link>
           </p>
         </form>
       </div>

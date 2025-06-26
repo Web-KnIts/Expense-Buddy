@@ -18,6 +18,9 @@ const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const handleRemoveImage = ()=>{
         setImage(null);
         setPreviewUrl(null)
+        if (inputRef.current) {
+        inputRef.current.value = ""; 
+  }
     }
 
     const onChooseFile = ()=>{

@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AuthLayout from '../../components/Layout/AuthLayout'
 import Input from '../../components/Input/Input';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import z from 'zod'
-import type { iloginCredential } from '../types';
+import type { iloginCredential, iUserResponse } from '../types';
 import axiosInstance from '../../services/axiosInstance';
 import { API_PATH } from '../../services/apiPath';
+import { useUserContext } from '../../context/userContext';
 
 const zodSchemaValidationForSignIn = z.object({
   email:z.string().email('Invalid Email'),
@@ -29,11 +30,13 @@ const Signin = () => {
     password:'',
     error:''
   });
-  
+
+  const navigate = useNavigate(); 
+  const {updateUser} = useUserContext();
   const handleLogin = async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     const validationResult = zodSchemaValidationForSignIn.safeParse(loginCredential);
-    console.log("loginCredential ",loginCredential)
+ 
     if(!validationResult.success)
     {
       setLoginCredentials((prev)=>({
@@ -46,18 +49,36 @@ const Signin = () => {
         ...prev,
         error:""
       }));
-    
       try{
         const response = await axiosInstance.post(API_PATH.AUTH.LOGIN,{
           email:loginCredential.email,
           password:loginCredential.password
         });
-        console.log(response);
+        const {token,user} = response.data as iUserResponse;
+        if(token){
+          localStorage.setItem('token',token);
+          updateUser(user);
+          navigate('/dashboard');``
+        }
       }
-      catch(err)
+      catch(err : any)
       {
-        console.log(API_PATH.AUTH.LOGIN)
+        console.log(API_PATH.AUTH.LOGIN," --------------------------------------------------")
         console.log('Error : ',err)
+        console.log("-------------------------------------------------------------------------")
+         if(err.response && err.response.data.message){
+          setLoginCredentials((prev)=>({
+        ...prev,
+        error:err.response.data.message || "Validation Error"
+        }));
+         }
+         else
+         {
+          setLoginCredentials((prev)=>({
+        ...prev,
+        error:err.response.data.message || "Validation Error"
+        }));
+         }
       }
 
   }
@@ -91,7 +112,7 @@ const Signin = () => {
             type='password'
           />
           {loginCredential.error && <p className='text-red-950 text-xs pb-2.5'>{loginCredential.error}</p>}
-          <button type='submit' className='btn-primary'>LOGIN</button>
+          <button type='submit' className='btn-primary cursor-pointer'>LOGIN</button>
           <p className='text-[13px] text-slate-800 mt-3'>Don't have an account ?{" "}
             <Link className='font-medium text-red-600 underline' to='/signup'>signup</Link>
           </p>

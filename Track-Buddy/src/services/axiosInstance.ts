@@ -23,6 +23,7 @@ axiosInstance.interceptors.request.use(
         return config;
     },
     (error)=>{
+        console.log('panga dera')
         return Promise.reject(error);
     }
 )
