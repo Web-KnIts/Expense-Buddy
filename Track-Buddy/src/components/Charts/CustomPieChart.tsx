@@ -1,14 +1,15 @@
-import React from 'react';
+import React from "react";
 import {
   PieChart,
   Pie,
   Cell,
   Tooltip,
   ResponsiveContainer,
-  Legend
-} from 'recharts';
-import CustomToolTip from './CustomToolTip';
-import CustomLegend from './CustomLegend';
+  Legend,
+  Label,
+} from "recharts";
+import CustomToolTip from "./CustomToolTip";
+import CustomLegend from "./CustomLegend";
 
 interface ChartData {
   name: string;
@@ -17,10 +18,11 @@ interface ChartData {
 
 interface CustomPieChartProps {
   data: ChartData[];
-  label?: string; // Optional fallback label
-  totalAmount?: string; // Optional fallback total
+  label?: string;
+  totalAmount?: string; 
   colors: string[];
   showTextAnchor: boolean;
+  ToolTipType:"1"|"2";
 }
 
 const CustomPieChart: React.FC<CustomPieChartProps> = ({
@@ -28,11 +30,9 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({
   label,
   totalAmount,
   colors,
-  showTextAnchor
+  showTextAnchor,
+  ToolTipType
 }) => {
-  // // Display the first or largest entry in center
-  // const mainEntry = data.reduce((max, entry) =>
-  //   entry.amount > max.amount ? entry : max, data[0]);
 
   return (
     <ResponsiveContainer width="100%" height={380}>
@@ -50,34 +50,41 @@ const CustomPieChart: React.FC<CustomPieChartProps> = ({
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
+          {showTextAnchor && <Label
+            position="center"
+            content={() => {
+              return (
+                <>
+                  {label && (
+                    <text
+                      x={"50%"}
+                      y={"50%"}
+                      dy={-10}
+                      textAnchor="middle"
+                      fill="#666"
+                      fontSize="14px"
+                    >
+                      {label}
+                    </text>
+                  )}
+                  <text
+                    x={"50%"}
+                    y={"50%"}
+                    dy={15}
+                    textAnchor="middle"
+                    fill="#333"
+                    fontSize="20px"
+                    fontWeight="bold"
+                  >
+                    {totalAmount}
+                  </text>
+                </>
+              );
+            }}
+          />}
         </Pie>
-        <Tooltip content={<CustomToolTip />} />
+        <Tooltip content={(props) => <CustomToolTip {...props} type={ToolTipType} />} />
         <Legend content={<CustomLegend />} />
-        {(
-          <>
-            <text
-              x="50%"
-              y="50%"
-              dy={-10}
-              textAnchor="middle"
-              fill="#666"
-              fontSize="14px"
-            >
-              {label}
-            </text>
-            <text
-              x="50%"
-              y="50%"
-              dy={15}
-              textAnchor="middle"
-              fill="#333"
-              fontSize="20px"
-              fontWeight="bold"
-            >
-              {totalAmount}
-            </text>
-          </>
-        )}
       </PieChart>
     </ResponsiveContainer>
   );

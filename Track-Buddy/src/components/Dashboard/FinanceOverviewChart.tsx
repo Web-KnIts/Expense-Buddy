@@ -15,7 +15,7 @@ const FinanceOverviewChart = ({totalBalance,totalExpense,totalIncome}:iFinanceOv
     const balanceData = [
         {name:"Total Balance",amount:totalBalance},
         {name:"Total Expense",amount:totalExpense},
-         {name:"Total Income",amount:totalIncome},
+        {name:"Total Income",amount:totalIncome},
     ]
     return (
     <div className='card'>
@@ -23,10 +23,11 @@ const FinanceOverviewChart = ({totalBalance,totalExpense,totalIncome}:iFinanceOv
             <h5 className='text-lg'>Financial Overview</h5>
         </div>
         <CustomPieChart 
+        ToolTipType='1'
         data={balanceData}
         label={"Total Balance"}
         colors={COLORS}
-        totalAmount={`₹.${totalBalance}`}
+        totalAmount={`₹ ${totalBalance}`}
         showTextAnchor />
     </div>
   )

@@ -1,3 +1,5 @@
+import type { Expense, Income } from "../pages/types";
+
 export const getInitals = (name : string)=>{
     if(!name) return "";
     const words = name.split(" ");
@@ -16,3 +18,17 @@ export const addThousandsSeparator = (value : number)=>{
     const formattedInteger = integerPart.replace(/(\d)(?=(\d\d)+\d$)/g, "$1,");
     return fractionalPart ? `${formattedInteger}.${fractionalPart}`: formattedInteger;
 }
+
+export const prepareBarChartData = <T extends Income | Expense>(
+  data: T[]
+): { category: string; amount: number }[] => {
+  const res =  data.map((item) => {
+    const category =
+      'category' in item ? item.category : 'source' in item ? item.source : 'Unknown';
+    return {
+      category,
+      amount: item.amount,
+    };
+  });
+  return res;
+};

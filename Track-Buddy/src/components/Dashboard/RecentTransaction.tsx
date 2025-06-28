@@ -23,7 +23,7 @@ const RecentTransaction = ({transactions,onSeeMore}:{transactions:iRecentTransac
                     key={item?._id}
                     title={item.type === 'expense' ? item.category : item.source}
                     Icon={item.icon}
-                    date={moment(item.date).format('DO MMM YYYY')}
+                    date={moment(item.date).format('MMMM DD, YYYY')}
                     amount={item.amount}
                     type={item.type}
                     hideDeleteBtn

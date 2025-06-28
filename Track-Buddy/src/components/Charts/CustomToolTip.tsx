@@ -1,16 +1,28 @@
 import React from 'react';
-import type { TooltipProps } from 'recharts';
 import { addThousandsSeparator } from '../../services/helper';
 
-const CustomToolTip: React.FC<TooltipProps<any, any>> = ({ active, payload }) => {
+const CustomToolTip: React.FC<any> = ({ active, payload, type }) => {
   if (!active || !payload || payload.length === 0) return null;
-  const item = payload[0];
+  var item;
+  switch(type){
+    case "1":
+       item = payload[0] ;
+       break;
+    case "2":
+      item = payload[0].payload ;
+      item.value = payload[0].payload.amount
+      item.name = payload[0].payload.category
+      item.payload = {
+        fill:payload[0].fill
+      }
+      break;
+  }
   return (
-    <div className="bg-blue-500/20 shadow-md rounded-lg p-2 border border-gray-300">
-      <p className="text-xs font-semibold mb-1" style={{color:item.payload.fill}}>{item.name}</p>
+    <div className="bg-white shadow-md rounded-lg p-4 border border-gray-300">
+      <p className="text-xs font-semibold mb-1" style={{ color: item?.payload.fill || item.fill }}>{item?.name}</p>
       <p className="text-sm text-gray-600">
         Amount{' '}:
-        <span className="text-sm font-medium text-gray-900 ml-2">₹.{addThousandsSeparator(item.value)}</span>
+        <span className="text-sm font-medium text-gray-900 ml-2">₹ {addThousandsSeparator(item?.value || 0)}</span>
       </p>
     </div>
   );

@@ -15,7 +15,7 @@ const FinanceOverview = ({totalBalance,totalExpense,totalIncome}:iFinanceOvervie
             <InfoCard Icon={IoMdCard}
               label="Total Balance"
               value={addThousandsSeparator(totalBalance)}
-              color="bg-red-400"
+              color="bg-yellow-400"
             />
             <InfoCard Icon={LuWalletMinimal}
               label="Total Income"
@@ -25,7 +25,7 @@ const FinanceOverview = ({totalBalance,totalExpense,totalIncome}:iFinanceOvervie
              <InfoCard Icon={LuHandCoins}
               label="Total Expense"
               value={addThousandsSeparator(totalExpense)}
-              color="bg-yellow-400"
+              color="bg-red-400"
             />
         </div>
   )

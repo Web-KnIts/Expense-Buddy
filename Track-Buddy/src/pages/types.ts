@@ -54,7 +54,7 @@ export interface Expense{
 
 type IncomeWithType = Income & { type: 'income' };
 type ExpenseWithType = Expense & { type: 'expense' };
-export type iRecentTransaction = (IncomeWithType | ExpenseWithType)[];
+export type iRecentTransaction = (IncomeWithType | ExpenseWithType)[] | [];
 
 export interface iDashboardResponse{
     totalBalance:number;

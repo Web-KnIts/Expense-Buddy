@@ -68,11 +68,9 @@ const SignUp = () => {
       error: "",
     }));
     try {
-      console.log(signupCredentials)
       if (profileImage) {
         const imageUploadResponse = await uploadImage(profileImage);
         const { imageUrl } = imageUploadResponse as { imageUrl: string };
-        console.log("image",imageUrl);
         profileUrl = imageUrl;
       }
       const response = await axiosInstance.post(API_PATH.AUTH.REGISTER, {
@@ -86,7 +84,6 @@ const SignUp = () => {
         navigate("/dashboard");
       }
     } catch (err: any) {
-      console.log(signupCredentials)
       console.log(
         API_PATH.AUTH.REGISTER,
         " --------------------------------------------------"
