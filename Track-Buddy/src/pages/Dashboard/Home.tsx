@@ -8,7 +8,6 @@ import type { iDashboardResponse } from '../types';
 import RecentTransaction from '../../components/Dashboard/RecentTransaction';
 import FinanceOverview from '../../components/Dashboard/FinanceOverview';
 import FinanceOverviewChart from '../../components/Dashboard/FinanceOverviewChart';
-import ExpenseTransaction from '../../components/Dashboard/Transaction';
 import LastDaysExpenseTransactionChart from '../../components/Dashboard/LastDaysExpenseTransactionChart';
 import Transaction from '../../components/Dashboard/Transaction';
 import LastDaysIncomeTransactionChart from '../../components/Dashboard/LastDaysIncomeTransactionChart';

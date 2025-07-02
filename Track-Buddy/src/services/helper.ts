@@ -1,4 +1,5 @@
-import type { Expense, Income } from "../pages/types";
+import moment from "moment";
+import type { iExpense, iIncome } from "../pages/types";
 
 export const getInitals = (name : string)=>{
     if(!name) return "";
@@ -19,7 +20,7 @@ export const addThousandsSeparator = (value : number)=>{
     return fractionalPart ? `${formattedInteger}.${fractionalPart}`: formattedInteger;
 }
 
-export const prepareBarChartData = <T extends Income | Expense>(
+export const prepareBarChartData = <T extends iIncome | iExpense>(
   data: T[]
 ): { category: string; amount: number }[] => {
   const res =  data.map((item) => {
@@ -32,3 +33,23 @@ export const prepareBarChartData = <T extends Income | Expense>(
   });
   return res;
 };
+
+export const prepareIncomeData = (data: iIncome[]) => {
+  const sortedData =  [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const chartData = sortedData.map((item)=>({
+    month:moment(item?.date).format('MMMM DD'),
+    amount:item?.amount,
+    source:item?.source
+  }))
+  return chartData;
+};
+
+export const prepareLineChartData = (data:iExpense[])=>{
+  const sortedData =  [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const chartData = sortedData.map((item)=>({
+    month:moment(item?.date).format('MMMM DD'),
+    amount:item?.amount,
+    category:item?.category
+  }))
+  return chartData;
+}

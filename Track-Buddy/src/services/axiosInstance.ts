@@ -4,7 +4,6 @@ import {BASE_URL} from './apiPath';
 
 const axiosInstance = axios.create({
     baseURL:BASE_URL,
-    timeout:10000,
     headers:{
         "Content-Type":"application/json",
         Accept:"application/json"
@@ -32,6 +31,7 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error)=>{
+        console.log(error)
         if(error.message)
         {
             if(error.response.status === 401){

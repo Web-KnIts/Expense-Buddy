@@ -3,22 +3,23 @@ import { LuUtensils,LuTrendingUp,LuTrendingDown,LuTrash2 } from "react-icons/lu"
 import { addThousandsSeparator } from "../../services/helper";
 
     interface iTransactionInfoCardProps{
+        id?:string;
         title:string;
         Icon:string;
         date:string;
         amount:number;
         type:'expense' | 'income';
         hideDeleteBtn:boolean;
+        onDelete?:(id:string)=>void;
     }
 
 
-const TransactionInfoCard = ({title,Icon,date,amount,hideDeleteBtn,type}:iTransactionInfoCardProps)=>{
+const TransactionInfoCard = ({title,Icon,date,amount,hideDeleteBtn,type,onDelete,id}:iTransactionInfoCardProps)=>{
 
     const getAmountStyle = ()=>(
         type === 'expense' ? "bg-red-50 text-red-500" : "bg-green-50 text-green-500"
     )
 
-    const onDelete = () => {};
     return (
         <>
             <div className="group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-100/50">
@@ -38,13 +39,16 @@ const TransactionInfoCard = ({title,Icon,date,amount,hideDeleteBtn,type}:iTransa
                     </div>
                     <div className="flex items-center gap-2">
                         {!hideDeleteBtn && (
-                            <button className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" onClick={onDelete}>
+                            <button
+                                className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                                onClick={() => onDelete && onDelete(id!)}
+                            >
                                 <LuTrash2 size={18}/>
                             </button>
                         )}
                         <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${getAmountStyle()}`}>
                             <h6 className="text-xs font-medium">
-                                {type === 'expense'?"-":"+"} ₹{addThousandsSeparator(amount)}
+                                {type === 'expense'?"-":"+"} ₹ {addThousandsSeparator(amount)}
                             </h6>
                             {type === 'income' ? <LuTrendingUp /> : <LuTrendingDown/>}
                         </div>

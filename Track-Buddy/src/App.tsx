@@ -10,6 +10,7 @@ import Home from './pages/Dashboard/Home'
 import SignUp from './pages/Auth/Signup'
 import Signin from './pages/Auth/Signin'
 import UserProvider from './context/userContext'
+import { Toaster } from 'react-hot-toast'
 
 function Root(){
   
@@ -44,6 +45,12 @@ function App() {
           </Routes>
         </Router>
     </div>
+    <Toaster toastOptions={{
+      className:"",
+      style:{
+        fontSize:'13px'
+      }
+    }}/>
     </UserProvider>
   )
 }
