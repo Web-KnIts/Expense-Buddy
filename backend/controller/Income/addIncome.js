@@ -3,9 +3,9 @@ const Income = require("../../model/income");
 const validateData = (validationData) => {
   let validation = true;
   validationData.forEach((val) => {
-      if (!val) {
-          validation = false;
-        }
+    if (!val) {
+      validation = false;
+    }
   });
   return validation;
 };
@@ -20,17 +20,28 @@ const addIncome = async (req, res) => {
         status: 400,
       });
     }
-
-    const createNewIncome = new Income({
-      userId,
-      icon,
-      source,
-      amount,
-    });
+    let createNewIncome;
+    if (date) {
+      createNewIncome = new Income({
+        userId,
+        icon,
+        source,
+        date,
+        amount,
+      });
+    }
+    else {
+      createNewIncome = new Income({
+        userId,
+        icon,
+        source,
+        amount,
+      });
+    }
     await createNewIncome.save();
     return res.status(201).json({
       status: 200,
-      message:'Income created successfully',
+      message: 'Income created successfully',
       id: createNewIncome._id,
       userId,
       income: createNewIncome,

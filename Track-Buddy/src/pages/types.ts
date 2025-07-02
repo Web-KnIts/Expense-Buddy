@@ -30,7 +30,7 @@ export interface iUserResponse{
     token:string;
 }
 
-export interface Income{
+export interface iIncome{
     _id:string;
     userId:string;
     icon:string;
@@ -41,7 +41,7 @@ export interface Income{
     updatedAt:string;
 }
 
-export interface Expense{
+export interface iExpense{
     _id:string;
     userId:string;
     icon:string;
@@ -52,8 +52,8 @@ export interface Expense{
     updatedAt:string;
 }
 
-type IncomeWithType = Income & { type: 'income' };
-type ExpenseWithType = Expense & { type: 'expense' };
+type IncomeWithType = iIncome & { type: 'income' };
+type ExpenseWithType = iExpense & { type: 'expense' };
 export type iRecentTransaction = (IncomeWithType | ExpenseWithType)[] | [];
 
 export interface iDashboardResponse{
@@ -63,7 +63,7 @@ export interface iDashboardResponse{
         averageIncome:number;
         totalStatement:number;
         last60Days:{
-            transaction:Income[]
+            transaction:iIncome[]
         }
     };
     expenseDetails:{
@@ -71,7 +71,7 @@ export interface iDashboardResponse{
         averageExpense:number;
         totalStatement:number;
         last60Days:{
-            transaction:Expense[]
+            transaction:iExpense[]
         }
     };
     recentTransaction:iRecentTransaction

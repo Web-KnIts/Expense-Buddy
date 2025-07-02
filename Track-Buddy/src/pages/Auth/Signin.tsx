@@ -26,8 +26,8 @@ const zodSchemaValidationForSignIn = z.object({
 
 const Signin = () => {
   const [loginCredential,setLoginCredentials] = useState<iloginCredential>({
-    email:'',
-    password:'',
+    email:'test@gmail.com',
+    password:'Test@123',
     error:''
   });
 
@@ -49,11 +49,13 @@ const Signin = () => {
         ...prev,
         error:""
       }));
+      console.log(loginCredential)
       try{
         const response = await axiosInstance.post(API_PATH.AUTH.LOGIN,{
           email:loginCredential.email,
           password:loginCredential.password
         });
+         console.log(response)
         const {token,user} = response.data as iUserResponse;
         if(token){
           localStorage.setItem('token',token);
@@ -76,7 +78,7 @@ const Signin = () => {
          {
           setLoginCredentials((prev)=>({
         ...prev,
-        error:err.response.data.message || "Validation Error"
+        error:err.response?.data?.message || "Validation Error"
         }));
          }
       }

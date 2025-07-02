@@ -18,6 +18,7 @@ const downloadExpenseExcel = async(req,res)=>{
             Amount:item.amount,
             Date:item.date
         }));
+        console.log('excel data = ',prepareExcelData)
         const wb = xlsx.utils.book_new();
         const ws = xlsx.utils.json_to_sheet(prepareExcelData);
         xlsx.utils.book_append_sheet(wb, ws, 'Expense');
@@ -26,7 +27,7 @@ const downloadExpenseExcel = async(req,res)=>{
 
         res.setHeader('Content-Disposition', 'attachment; filename="Expense_details.xlsx"');
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
+        console.log(buffer)
         return res.status(200).send(buffer);
 
     }catch(err)

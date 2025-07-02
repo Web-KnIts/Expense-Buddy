@@ -12,7 +12,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         <div className='hidden md:block w-[40vw] h-screen bg-red-100 relative overflow-hidden'>
             <div className='w-40 h-40 rounded-[24px] bg-red-400 absolute -top-7 -left-8 z-[1]'/>
             <div className='w-36 h-36 rounded-[24px] bg-red-800 absolute -top-12 left-4 z-[2]'/>
-            <div className='w-10 h-3/4 rounded-[12px] bg-red-500 absolute top-22 left-8 z-[0]'/>
+            <div className='w-10 h-[80vh] rounded-[12px] bg-red-500 absolute top-22 left-8 z-[0]'/>
             <div className='w-40 h-40 rounded-[24px] bg-red-400 absolute -bottom-7 -left-8 z-[1]'/>
             <div className='w-36 h-36 rounded-[24px] bg-red-800 absolute -bottom-12 left-4 z-[2]'/>
 
