@@ -1,7 +1,7 @@
 const express = require('express');
 const protect = require('../middleware/authMiddleware');
 const addExpense = require('../controller/Expense/addExpense');
-const getExpense = require('../controller/Expense/getIncome');
+const getExpense = require('../controller/Expense/getExpense');
 const downloadExpenseExcel = require('../controller/Expense/downloadExpenseExcel');
 const deleteExpense = require('../controller/Expense/deleteExpense');
 

@@ -13,20 +13,33 @@ const validateData = (validationData) => {
 const addExpense = async (req, res) => {
   const userId = req.user.id;
   try {
-    const { icon, category, amount } = req.body;
+    const { icon, category, amount,date } = req.body;
     if (!validateData([category, amount])) {
       return res.status(400).json({
         message: "All fields are Required",
         status: 400,
       });
     }
-
-    const createNewExpense = new Expense({
+    let createNewExpense;
+    if(date)
+    {
+      createNewExpense = new Expense({
       userId,
       icon,
       category,
       amount,
+      date
     });
+    }
+    else
+    {
+      createNewExpense = new Expense({
+        userId,
+        icon,
+        category,
+        amount,
+      });
+    }
     await createNewExpense.save();
     return res.status(201).json({
       status: 200,
